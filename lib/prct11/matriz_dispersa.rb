@@ -62,7 +62,7 @@ class MatrizDispersa < Matriz
     columnas = value
   end
   
-
+  
 
 end # class
 end # module
