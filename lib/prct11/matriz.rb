@@ -124,6 +124,27 @@ class Matriz
     end
     s
   end
+  
+
+ protected
+  #Método para ser llamado por las subclases para modificar el nº de filas
+  def filas=(value)
+    @filas = value
+  end
+
+  #Método para ser llamado por las subclases para modificar el nº de columnas
+  def columnas=(value)
+    @columnas = value
+  end
+
+  #Se asegura que los valores pasados están dentro del rango [0, Infinito)
+  #y que son números enteros. En caso contrario lanza una excepción.
+  def validate_sizes(*values)
+    values.each do |x|
+      raise(ArgumentError, "#{x} no es un valor correcto") unless(x.is_a?Integer and x >= 0)
+    end
+  end
+
 end #-- class Matriz
 
 end #-- module Prct11
