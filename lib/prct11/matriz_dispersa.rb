@@ -62,7 +62,19 @@ class MatrizDispersa < Matriz
     columnas = value
   end
   
-  
+    #Acceder a un elemento de la matriz con el operador [].
+  def [](fila, columna)
+    @container[Posicion.new(fila, columna)]
+  end
+
+  #Aignar un valor a una posición de la matriz con el operador [].
+  def []=(fila, columna, valor)
+    if valor != zero
+      @container[Posicion.new(fila, columna)] = valor
+    else
+      @container.delete(Posicion.new(fila, columna))
+    end
+  end
 
 end # class
 end # module
