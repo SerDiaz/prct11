@@ -1,15 +1,19 @@
 require "./lib/prct09/fraccion.rb"
 
-module Prct09
-  class Matriz
-    attr_reader :N, :M
-    attr_accessor :contenido
-    
-    def initialize(n, m)
-      raise ArgumentError, 'Indice no valido' unless n.is_a? Fixnum and n > 0 and m.is_a? Fixnum and m > 0
-    
-      @N, @M = n, m
-    end
+#Clase que permite la representación de matrices y las operaciones entre ellas.
+class Matriz
+  include Enumerable
+   attr_reader :filas, :columnas
 
+  #Constructor. No crea ningún contenedor.
+  def initialize(filas, columnas)
+    validate_sizes(filas, columnas)
+    @filas = filas
+    @columnas = columnas
   end
-end
+
+
+end #-- class Matriz
+
+end #-- module Prct11
+
