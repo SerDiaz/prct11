@@ -67,7 +67,7 @@ class MatrizDispersa < Matriz
     @container[Posicion.new(fila, columna)]
   end
 
-  #Aignar un valor a una posición de la matriz con el operador [].
+   #Aignar un valor a una posición de la matriz con el operador [].
   def []=(fila, columna, valor)
     if valor != zero
       @container[Posicion.new(fila, columna)] = valor
