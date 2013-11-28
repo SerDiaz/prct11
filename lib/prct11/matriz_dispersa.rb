@@ -31,6 +31,37 @@ class MatrizDispersa < Matriz
     super(filas, columnas)
     @container = Hash.new(zero)
   end
+  
+  #Modifica el número de filas de la matriz.
+  def filas=(value)
+    validate_sizes(value)
+
+    if value < filas
+      @container.each_key do |k|
+        if k.f >= value
+          @container.delete k
+        end
+      end
+    end
+
+    filas = value
+  end
+
+  #Modifica el número de columnas de la matriz.
+  def columnas=(value)
+    validate_sizes(value)
+
+    if value < columnas
+      @container.each_key do |k|
+        if k.c >= value
+          @container.delete k
+        end
+      end
+    end
+
+    columnas = value
+  end
+  
 
 
 end # class
