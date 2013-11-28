@@ -18,7 +18,6 @@ class MatrizDensa < Matriz
 
     filas = value
   end
-
   #Modifica el número de columnas de la matriz.
   def columnas=(value)
     validate_sizes(value)
