@@ -1,184 +1,47 @@
 require "./lib/prct09/matriz.rb"
 
-module Prct09
-    class Matriz_densa < Matriz
-      def initialize(n, m)
-	super
-	
-	@contenido = Array.new(@N,0)
-      i = 0
-      while i < @N
-        @contenido[i] = Array.new(@M,0)
-        i += 1  
-      end
-    end
-      
-    def get(i, j)
-      if( i < 0 or i >=@N or j < 0 or j >= @M)
-        return nil
-      end
+class MatrizDensa < Matriz
 
-      @contenido[i][j]
-    end
-    
-    def null_percent #elementos no nulo
-      total = @N*@M
-      no_nulos = 0
-      
-      i = 0
-      while(i < @N)
-        j = 0
-        while(j < @M)
-          if(@contenido[i][j] != @contenido[i][j].class.null)
-            no_nulos += 1
-          end
-          j += 1
-        end
-        i += 1
-      end
-      
-      nulos = total - no_nulos
-      nulos.to_f/total.to_f
-    end
-    
-    def set(i, j, value)
-      if( i < 0 or i >=@N or j < 0 or j >= @M)
-       return nil
-      end
-       
-      @contenido[i][j] = value
-    
-    end
-    
-    def to_s
-      s = ""
-      i = 0
-      while(i < @N)
-        j = 0
-        while(j < @M)
-          s += "#{@contenido[i][j].to_s}\t"
-          j += 1
-        end
-        s += "\n"
-        i += 1
-      end
-      s
-    end
-    
-    def +(other)
-                      raise ArgumentError , 'Tipo invalido' unless other.is_a? Matriz
-                      raise ArgumentError , 'Matriz no compatible' unless @N == other.N and @M == other.M
+  def initialize(fils, cols)
+    super(fils, cols)
+    @container = Array.new(fils){ Array.new(cols, zero) }
+  end
   
-                      c = Matriz_Densa.new(@N, @M)
-                      i = 0
-                      while(i < @N)
-                        j = 0
-                        while(j < @M)
-                                      c.set(i, j, get(i,j) + other.get(i,j))
-                                      j += 1
-                        end 
-                        i += 1
-                      end
-                      if (c.null_percent > 0.6)
-                        c = Prct09::Matriz_Dispersa.copy(c)
-                      end
-                      c
-    end
-        
-    def -(other)
-                      raise ArgumentError , 'Tipo invalido' unless other.is_a? Matriz
-                      raise ArgumentError , 'Matriz no compatible' unless @N == other.N and @M == other.M
-  
-                      c = Matriz_Densa.new(@N, @M)
-                      i = 0
-                      while(i < @N)
-                        j = 0
-                        while(j < @M)
-                                      c.set(i, j, get(i,j) - other.get(i,j))
-                                      j += 1
-                        end
-                        i += 1
-                      end
-                      if (c.null_percent > 0.6)
-                        c = Prct09::Matriz_Dispersa.copy(c)
-                      end
-                      c
-    end
-        
-    def *(other)
-                    raise ArgumentError , 'Parametro invalido' unless other.is_a? Numeric or other.is_a? Matriz
+  def filas=(value)
+    validate_sizes(value)
 
-                    if(other.is_a? Numeric) # Matriz * numero
-                              c = Matriz_Densa.new(@N, @M)
-                          i = 0
-                              while(i < @N)
-                                j = 0
-                                while(j < @M)
-                                         c.set(i, j, get(i,j)*other)
-                                         j += 1
-                                end 
-                                    i += 1
-                              end 
-                    else 
-			  raise ArgumentError , 'Matriz no compatible (A.N == B.M)' unless @M == other.N
-			  c = Matriz_Densa.new(@N, other.M)
-			  i = 0
-			  while(i < @N)
-			    j = 0
-			    while(j < other.M)
-			      k = 0
-					      
-			      while(k < @M)
-				c.set(i, j, get(i, k) * other.get(k,j) + c.get(i,j))
-				k += 1
-			      end 
-						j += 1
-			    end 
-					  i += 1
-			  end 
-			end 
-                   if (c.null_percent > 0.6)
-                        c = MathExpansion::Matriz_Dispersa.copy(c)
-                   end
-                   c
-    end 
+    if value > filas
+      (value - filas).times { @container << Array.new(columnas, zero) }
+    elsif value < filas
+      @container.slice!(-1, filas - value)
+    end
 
-    
-    
-    
-    
-    #Practica 10 maximo y minimo.
-    
-    def max
-        m = get(0,0)
-        i = 0
-        while(i < @N)
-                j = 0
-                while(j < @M)
-                        if (get(i,j) > m)
-                                m = get(i,j)
-                        end
-                        j += 1
-                end
-                i += 1
+    filas = value
+  end
+
+  #Modifica el número de columnas de la matriz.
+  def columnas=(value)
+    validate_sizes(value)
+
+    if value != columnas
+      @container.each do |x|
+        if value > columnas
+          (value - columnas).times { x << zero }
+        else
+          x.slice!(-1, columnas - value)
         end
-        m
+      end
     end
 
-    def min
-        m = get(0,0)
-        i = 0
-        while(i < @N)
-                j = 0
-                while(j < @M)
-                        if (get(i,j) < m)
-                                m = get(i,j)
-                        end
-                        j += 1
-                end
-                i += 1
-        end
-        m
-    end 
+    columnas = value
+  end
+
+  #Permite acceder a un elemento de la matriz con el operador [].
+  def [](fila, columna)
+    @container[fila][columna]
+  end
+
+  #Permite asignar un valor a una posición de la matriz con el operador [].
+  def []=(fila, columna, valor)
+    @container[fila][columna] = valor
   end 
-end 
