@@ -1,6 +1,6 @@
-require "./lib/prct09/fraccion.rb"
+module Prct11
 
-#Clase que permite la representación de matrices y las operaciones entre ellas.
+#Clase para representacion y operacioness entre matrices
 class Matriz
   include Enumerable
    attr_reader :filas, :columnas
@@ -147,5 +147,4 @@ class Matriz
 
 end #-- class Matriz
 
-end #-- module Prct11
-
+end

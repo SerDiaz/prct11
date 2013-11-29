@@ -1,5 +1,7 @@
-require "./lib/prct09/matriz.rb"
+require "./matriz.rb"
 
+module Prct11
+  
 class MatrizDensa < Matriz
 
   def initialize(fils, cols)
@@ -44,3 +46,6 @@ class MatrizDensa < Matriz
   def []=(fila, columna, valor)
     @container[fila][columna] = valor
   end 
+end
+
+end

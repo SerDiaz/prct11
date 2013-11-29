@@ -1,4 +1,4 @@
-require "prct11/matriz"
+require "./matriz.rb"
 
 module Prct11
 

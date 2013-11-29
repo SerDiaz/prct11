@@ -71,7 +71,7 @@ module Prct11
         end
     end
 
-    def \(other)
+    def /(other)
         if !(other.is_a? Fraccion)
             Fraccion.new(@num, @denom*other)
         else
